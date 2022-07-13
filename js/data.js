@@ -45,9 +45,7 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-const advertsQuantity = 10;
-
-const createAdverts = () => {
+const createAdverts = (advertsQuantity) => {
   const adverts = [];
   for (let i = 1; i <= advertsQuantity; i++) {
     const author = {
@@ -65,7 +63,7 @@ const createAdverts = () => {
       price: getRandomInteger(0, 4000),
       type: getRandomArrayElement(TYPES),
       rooms: getRandomInteger(1, 12),
-      quests: getRandomInteger(1, 99),
+      guests: getRandomInteger(1, 99),
       checkin: getRandomArrayElement(CHECKIN_CHECKOUT),
       checkout: getRandomArrayElement(CHECKIN_CHECKOUT),
       features: getRandomLengthArray(FEATURES),
@@ -84,5 +82,13 @@ const createAdverts = () => {
 
   return adverts;
 };
-
+/*
+const HOUSING = [
+  'Квартира',
+  'Бунгало',
+  'Дом',
+  'Дворец',
+  'Отель'
+];
+*/
 export {createAdverts};
