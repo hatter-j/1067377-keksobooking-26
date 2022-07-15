@@ -82,13 +82,5 @@ const createAdverts = (advertsQuantity) => {
 
   return adverts;
 };
-/*
-const HOUSING = [
-  'Квартира',
-  'Бунгало',
-  'Дом',
-  'Дворец',
-  'Отель'
-];
-*/
+
 export {createAdverts};
