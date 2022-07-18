@@ -33,8 +33,10 @@ simularAdverts.forEach(({offer, author}) => {
     const advertPhotoCloneElement = advertPhotoElement.cloneNode(true);
     advertPhotoCloneElement.src = el;
     advertPhotosContainerElement.append(advertPhotoCloneElement);
+    if (!el) {
+      advertPhotoCloneElement.style.display = 'none';
+    }
   });
-  advertPhotoElement.style.display = 'none';
   advertElement.querySelector('.popup__avatar').src = author.avatar ? author.avatar : '';
 
   simularAdvertsFragment.append(advertElement);
