@@ -53,8 +53,8 @@ const createAdverts = (advertsQuantity) => {
     };
 
     const location = {
-      lat: getRandomFractional(35.65000, 35.70000),
-      lng: getRandomFractional(139.70000, 139.80000)
+      lat: getRandomFractional(35.65000, 35.70000, 5),
+      lng: getRandomFractional(139.70000, 139.80000, 5)
     };
 
     const offer = {
