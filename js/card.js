@@ -36,8 +36,8 @@ simularAdverts.forEach(({offer, author}) => {
     if (!el) {
       advertPhotoCloneElement.style.display = 'none';
     }
-    advertPhotoElement.remove();
   });
+  advertPhotoElement.remove();
   advertElement.querySelector('.popup__avatar').src = author.avatar ? author.avatar : '';
 
   simularAdvertsFragment.append(advertElement);
