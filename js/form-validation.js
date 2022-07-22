@@ -20,7 +20,8 @@ const getValidRoom = () => ROOM_OPTION[validRoomsElement.value].includes(validCa
 
 const getRoomOptionErrorMessage = () => `Выбрано: ${validRoomsElement.value} комнат. Выберите другое количество мест, например: ${ROOM_OPTION[validRoomsElement.value].join(' или ')}`;
 
-pristine.addValidator(validRoomsElement, getValidRoom, getRoomOptionErrorMessage) ;
+pristine.addValidator(validRoomsElement, getValidRoom, getRoomOptionErrorMessage);
+pristine.addValidator(validCapacityElement, getValidRoom, getRoomOptionErrorMessage);
 
 formElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
