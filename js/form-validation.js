@@ -47,6 +47,7 @@ pristine.addValidator(validRoomsElement, getValidRoom, getRoomOptionErrorMessage
 pristine.addValidator(validCapacityElement, getValidRoom, getRoomOptionErrorMessage);
 
 pristine.addValidator(validTypeElement, getValidPrice, getMinPriceErrorMessage);
+pristine.addValidator(validPriceElement, getValidPrice, getMinPriceErrorMessage);
 
 formElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
