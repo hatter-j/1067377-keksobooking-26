@@ -1,17 +1,9 @@
-import {createAdverts} from './data.js';
+import {createAdverts, ADVERT_TYPE_VALUE} from './data.js';
 
 const mapCanvasElement = document.querySelector('.map__canvas');
 const advertCardTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
-
-const advertTypeValue = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец',
-  hotel: 'Отель',
-};
 
 const simularAdverts = createAdverts(1);
 
@@ -22,7 +14,7 @@ simularAdverts.forEach(({offer, author}) => {
   advertElement.querySelector('.popup__title').textContent = offer.title ? offer.title : '';
   advertElement.querySelector('.popup__text--address').textContent = offer.address ? offer.address : '';
   advertElement.querySelector('.popup__text--price').textContent = offer.price ? `${offer.price} ₽/ночь` : '';
-  advertElement.querySelector('.popup__type').textContent = offer.type ? advertTypeValue[offer.type] : '';
+  advertElement.querySelector('.popup__type').textContent = offer.type ? ADVERT_TYPE_VALUE[offer.type] : '';
   advertElement.querySelector('.popup__text--capacity').textContent = offer.rooms && offer.guests ? `${offer.rooms} комнаты для ${offer.guests} гостей` : '';
   advertElement.querySelector('.popup__text--time').textContent = offer.checkin && offer.checkout ? `Заезд после ${offer.checkin}, выезд до ${offer.checkout}` : '';
   advertElement.querySelector('.popup__features').textContent = offer.features ? offer.features : '';
