@@ -17,7 +17,8 @@ const validCheckOutElement = formElement.querySelector('#timeout');
 const getValidRoom = () => ROOM_OPTION[validRoomsElement.value].includes(validCapacityElement.value);
 const getRoomOptionErrorMessage = () => `Выбрано: ${validRoomsElement.value} комнат. Выберите другое количество мест, например: ${ROOM_OPTION[validRoomsElement.value].join(' или ')}`;
 
-const getValidPrice = () => validPriceElement >= MIN_PRICE[validTypeElement.value];
+const getValidPrice = () => validPriceElement.value >= MIN_PRICE[validTypeElement.value];
+const getValidPriceFill = () => validPriceElement.value;
 const getMinPriceErrorMessage = () => `Цена не может быть меньше: ${MIN_PRICE[validTypeElement.value]}`;
 
 validRoomsElement.addEventListener('change', () => {
@@ -46,7 +47,7 @@ validCheckOutElement.addEventListener('change', () => {
 pristine.addValidator(validRoomsElement, getValidRoom, getRoomOptionErrorMessage);
 pristine.addValidator(validCapacityElement, getValidRoom, getRoomOptionErrorMessage);
 
-pristine.addValidator(validTypeElement, getValidPrice, getMinPriceErrorMessage);
+pristine.addValidator(validTypeElement, getValidPriceFill, getMinPriceErrorMessage);
 pristine.addValidator(validPriceElement, getValidPrice, getMinPriceErrorMessage);
 
 formElement.addEventListener('submit', (evt) => {
