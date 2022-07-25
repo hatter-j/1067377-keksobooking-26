@@ -5,6 +5,8 @@
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="leaflet/leaflet.css">
+  <link rel="stylesheet" href="nouislider/nouislider.css">
   <title>Кексобукинг</title>
 </head>
 <body>
@@ -63,7 +65,7 @@
             <label class="map__feature map__feature--elevator" for="filter-elevator">Лифт</label>
             <input type="checkbox" name="features" value="conditioner" id="filter-conditioner" class="map__checkbox visually-hidden">
             <label class="map__feature map__feature--conditioner" for="filter-conditioner">Кондиционер</label>
-           </fieldset>
+            </fieldset>
         </form>
       </div>
     </section>
@@ -94,7 +96,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text">
+          <input id="address" name="address" type="text" readonly>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
@@ -234,6 +236,8 @@
     </div>
   </template>
 
+  <script src="nouislider/nouislider.js"></script>
+  <script src="leaflet/leaflet.js"></script>
   <script src="pristine/pristine.min.js"></script>
   <script src="js/main.js" type="module"></script>
 </body>
