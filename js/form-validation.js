@@ -13,7 +13,17 @@ const validTypeElement = formElement.querySelector('#type');
 const validPriceElement = formElement.querySelector('#price');
 const validCheckInElement = formElement.querySelector('#timein');
 const validCheckOutElement = formElement.querySelector('#timeout');
+const sliderPriceElement = document.querySelector('.ad-form__slider');
 
+noUiSlider.create(sliderPriceElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 5000,
+  step: 1,
+  connect: 'lower',
+});
 const getValidRoom = () => ROOM_OPTION[validRoomsElement.value].includes(validCapacityElement.value);
 const getRoomOptionErrorMessage = () => `Выбрано: ${validRoomsElement.value} комнат. Выберите другое количество мест, например: ${ROOM_OPTION[validRoomsElement.value].join(' или ')}`;
 
@@ -34,6 +44,10 @@ validTypeElement.addEventListener('change', () => {
 });
 validPriceElement.addEventListener('change', () => {
   pristine.validate([validTypeElement, validPriceElement]);
+});
+sliderPriceElement.noUiSlider.on('update', () => {
+  validPriceElement.value = sliderPriceElement.noUiSlider.get();
+  pristine.validate([validPriceElement, validTypeElement]);
 });
 
 validCheckInElement.addEventListener('change', () => {

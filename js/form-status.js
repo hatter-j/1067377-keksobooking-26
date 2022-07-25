@@ -21,8 +21,8 @@ const setFormActive = (elementName, className, elementArrayName) => {
   });
 };
 
-setFormDisabled(formElement, CLASS_NAME_FORM_DISABLED, formFieldsetsElement);
-setFormDisabled(mapFormElement, CLASS_NAME_MAP_DISABLED, mapFiltersElement);
-setFormActive(formElement, CLASS_NAME_FORM_DISABLED, formFieldsetsElement);
-
-export {formElement};
+export {setFormDisabled, setFormActive,
+  formElement, mapFormElement,
+  CLASS_NAME_FORM_DISABLED, CLASS_NAME_MAP_DISABLED,
+  formFieldsetsElement, mapFiltersElement
+};
