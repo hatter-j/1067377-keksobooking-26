@@ -1,4 +1,3 @@
-import {createAdverts} from './data.js';
 import {createSimularAdverts} from './card.js';
 import {setFormActive,
   formElement, mapFormElement,
@@ -28,47 +27,52 @@ L.tileLayer(
   },
 ).addTo(map);
 
-const markerIcon = L.icon({
+const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
 
-const marker = L.marker(
+const mainPinMarker = L.marker(
   TOKYO_COORDINATES,
   {
     draggable: true,
-    icon: markerIcon
+    icon: mainPinIcon
   }
 );
-marker.addTo(map);
+mainPinMarker.addTo(map);
 
-marker.on('moveend', (evt) => {
+mainPinMarker.on('moveend', (evt) => {
   addressElement.value = Object.entries(evt.target.getLatLng())
     .map((objItem) => objItem[1].toFixed(5))
     .join(', ');
 });
 
-const customMarkerIcon = L.icon({
+const customPinIcon = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
-const createMarker = ({location, offer, author}) => {
-  const customMarker = L.marker({
-    lat: location.lat,
-    lng: location.lng
-  },
-  {
-    icon: customMarkerIcon
-  }
-  );
-  customMarker.addTo(map)
-    .bindPopup(createSimularAdverts({offer, author}));
+const createMarker = (simularAdverts) => {
+  simularAdverts.forEach(({location, offer, author}) => {
+    const marker = L.marker(
+      {
+        lat: location.lat,
+        lng: location.lng
+      },
+      {
+        icon: customPinIcon
+      }
+    );
+    marker.addTo(map).bindPopup(createSimularAdverts({offer, author}));
+  });
 };
 
-const points = createAdverts(10);
-points.forEach(({location, offer, author}) => {
-  createMarker({location, offer, author});
-});
+const restMarkers = () => {
+  mainPinMarker.setLatLng(TOKYO_COORDINATES);
+  map.closePopup();
+  addressElement.value = `${TOKYO_COORDINATES.lat}, ${TOKYO_COORDINATES.lng}`;
+};
+
+export {createMarker, restMarkers};

@@ -1,5 +1,8 @@
 import {formElement} from './form-status.js';
 import {ROOM_OPTION, MIN_PRICE} from './data.js';
+import {createErrMessage, createSuccessMessage} from './card.js';
+import {restMarkers} from './map.js';
+import {sendData} from './fetch-data.js';
 
 const pristine = new Pristine(formElement, {
   classTo: 'ad-form__element',
@@ -14,6 +17,8 @@ const validPriceElement = formElement.querySelector('#price');
 const validCheckInElement = formElement.querySelector('#timein');
 const validCheckOutElement = formElement.querySelector('#timeout');
 const sliderPriceElement = document.querySelector('.ad-form__slider');
+const submitBtnElement = document.querySelector('.ad-form__submit');
+const restBtnElement = formElement.querySelector('.ad-form__reset');
 
 noUiSlider.create(sliderPriceElement, {
   range: {
@@ -23,6 +28,14 @@ noUiSlider.create(sliderPriceElement, {
   start: 5000,
   step: 1,
   connect: 'lower',
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    }
+  }
 });
 const getValidRoom = () => ROOM_OPTION[validRoomsElement.value].includes(validCapacityElement.value);
 const getRoomOptionErrorMessage = () => `Выбрано: ${validRoomsElement.value} комнат. Выберите другое количество мест, например: ${ROOM_OPTION[validRoomsElement.value].join(' или ')}`;
@@ -62,7 +75,45 @@ pristine.addValidator(validCapacityElement, getValidRoom, getRoomOptionErrorMess
 
 pristine.addValidator(validPriceElement, getValidPrice, getMinPriceErrorMessage);
 
-formElement.addEventListener('submit', (evt) => {
+const setBlockSubmitButton = () => {
+  submitBtnElement.disabled = true;
+  submitBtnElement.textContent = 'Данные отправляются...';
+};
+
+const setUnblockSubmitButton = () => {
+  submitBtnElement.disabled = false;
+  submitBtnElement.textContent = 'Опубликовать';
+};
+
+const onSuccessSendData = () => {
+  createSuccessMessage();
+  setUnblockSubmitButton();
+
+  formElement.reset();
+  restMarkers();
+};
+
+const onErrorSendData = () => {
+  createErrMessage();
+  setUnblockSubmitButton();
+};
+
+const setUserFormSubmit = () => {
+  formElement.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      setBlockSubmitButton();
+      sendData(onSuccessSendData, onErrorSendData, new FormData(evt.target));
+    }
+  });
+};
+
+restBtnElement.addEventListener('click', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  formElement.reset();
+  restMarkers();
+  pristine.reset();
 });
+
+export { setUserFormSubmit };

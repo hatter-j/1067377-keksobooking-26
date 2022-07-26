@@ -29,4 +29,13 @@ const getRandomLengthArray = (array) => {
   return newArray;
 };
 
-export {getRandomInteger, getRandomFractional, getRandomArrayElement, getRandomLengthArray};
+const showErrorLoadData = (message) => {
+  const alertContainer = document.createElement('div');
+  const divContainer = document.querySelector('.promo');
+
+  alertContainer.textContent = message;
+  alertContainer.classList.add('alert-container');
+  divContainer.after(alertContainer);
+};
+
+export {getRandomInteger, getRandomFractional, getRandomArrayElement, getRandomLengthArray, showErrorLoadData};
