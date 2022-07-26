@@ -18,7 +18,7 @@ const map = L.map('map-canvas')
     setFormActive(formElement, CLASS_NAME_FORM_DISABLED, formFieldsetsElement);
     setFormActive(mapFormElement, CLASS_NAME_MAP_DISABLED, mapFiltersElement);
   })
-  .setView(TOKYO_COORDINATES, 10);
+  .setView(TOKYO_COORDINATES, 12);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
