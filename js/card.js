@@ -1,4 +1,4 @@
-import {ADVERT_TYPE_VALUE} from './data.js';
+import {advertTypeValue} from './data.js';
 
 const createSimilarAdverts = ({offer, author}) => {
   const advertCardTemplate = document.querySelector('#card')
@@ -10,7 +10,7 @@ const createSimilarAdverts = ({offer, author}) => {
   advertElement.querySelector('.popup__title').textContent = offer.title;
   advertElement.querySelector('.popup__text--address').textContent = offer.address;
   advertElement.querySelector('.popup__text--price').textContent = offer.price ? `${offer.price} ₽/ночь` : '';
-  advertElement.querySelector('.popup__type').textContent = ADVERT_TYPE_VALUE[offer.type];
+  advertElement.querySelector('.popup__type').textContent = advertTypeValue[offer.type];
   advertElement.querySelector('.popup__text--capacity').textContent = offer.rooms && offer.guests ? `${offer.rooms} комнаты для ${offer.guests} гостей` : '';
   advertElement.querySelector('.popup__text--time').textContent = offer.checkin && offer.checkout ? `Заезд после ${offer.checkin}, выезд до ${offer.checkout}` : '';
   advertElement.querySelector('.popup__features').textContent = offer.features ? offer.features.join(', ') : '';
@@ -33,11 +33,13 @@ const createSimilarAdverts = ({offer, author}) => {
   return advertElement;
 };
 
-const closeButtonElement = (formContainer) => {
-  const buttonError = formContainer.querySelector('.error__button');
-  buttonError.addEventListener('click', () => {
+const onErrorButtonClick = (formContainer) => {
+  const errorButton = formContainer.querySelector('.error__button');
+  errorButton.addEventListener('click',() => {
     formContainer.remove();
-  });
+  },
+  {once: true},
+  );
 };
 
 const onPopupEscKeydown = (formContainer) => {
@@ -46,13 +48,17 @@ const onPopupEscKeydown = (formContainer) => {
     if (key === 'Escape') {
       formContainer.remove();
     }
-  });
+  },
+  {once: true},
+  );
 };
 
 const onPopupMouseClick = (formContainer) => {
   document.addEventListener('click', () => {
     formContainer.remove();
-  });
+  },
+  {once: true},
+  );
 };
 
 const createErrMessage = () => {
@@ -60,7 +66,7 @@ const createErrMessage = () => {
   const errorElement = errorTemplateElement.cloneNode(true);
   document.body.append(errorElement);
 
-  closeButtonElement(errorElement);
+  onErrorButtonClick(errorElement);
   onPopupEscKeydown(errorElement);
   onPopupMouseClick(errorElement);
 };
@@ -76,4 +82,8 @@ const createSuccessMessage = () => {
   onPopupMouseClick(successElement);
 };
 
-export {createSimilarAdverts, createErrMessage, createSuccessMessage};
+export {
+  createSimilarAdverts,
+  createErrMessage,
+  createSuccessMessage
+};

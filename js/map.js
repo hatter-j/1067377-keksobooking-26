@@ -1,11 +1,31 @@
 import {createSimilarAdverts} from './card.js';
-import {setFormActive,
-  formElement, mapFormElement,
-  CLASS_NAME_FORM_DISABLED, CLASS_NAME_MAP_DISABLED,
-  formFieldsetsElement, mapFiltersElement
+import {
+  setFormActive,
+  formElement,
+  mapFormElement,
+  CLASS_NAME_FORM_DISABLED,
+  CLASS_NAME_MAP_DISABLED,
+  formFieldsetsElement,
+  mapFiltersElement
 } from './form-status.js';
 
+import {
+  typeFilterElement,
+  priceFilterElement,
+  roomsFilterElement,
+  guestsFilterElement,
+  featuresCheckboxes,
+  featuresFilterArrays,
+  getAdvertFilter,
+} from './map-filters.js';
+
+import {debounce} from './util.js';
+import {state} from './data.js';
+
+
 const MAP_SCALE = 12;
+const RERENDER_DELAY = 500;
+const ADVERTS_QUANTITY = 10;
 
 const TOKYO_COORDINATES = {
   lat: 35.68951,
@@ -13,7 +33,7 @@ const TOKYO_COORDINATES = {
 };
 
 const addressElement = formElement.querySelector('#address');
-addressElement.value = Object.values(TOKYO_COORDINATES).join(', ');
+const setAddressDefault = () => (addressElement.value = `${TOKYO_COORDINATES.lat}, ${TOKYO_COORDINATES.lng}`);
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -56,70 +76,19 @@ const customPinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const mapFiltersContainer = document.querySelector('.map__filters-container');
-const typeFilterElement = mapFiltersContainer.querySelector('#housing-type');
-const priceFilterElement = mapFiltersContainer.querySelector('#housing-price');
-const priceOption = {
-  middle: 0,
-  low: 10000,
-  high: 50000,
-};
-const roomsFilterElement = mapFiltersContainer.querySelector('#housing-rooms');
-const guestsFilterElement = mapFiltersContainer.querySelector('#housing-guests');
-const featuresFilterArrays = [];
-const featuresCheckboxes = mapFiltersContainer.querySelectorAll('input[type=checkbox]');
-
-const checkTypeFilter = (offer) => offer.type === typeFilterElement.value || typeFilterElement.value === 'any';
-
-const checkPriceFilter = (offer) => {
-  const priceAdvert = offer.price;
-  const priceLow = priceOption['low'];
-  const priceHight = priceOption['high'];
-  switch (priceFilterElement.value) {
-    case 'low':
-      return priceAdvert < priceLow;
-    case 'high':
-      return priceAdvert > priceHight;
-    case 'middle':
-      return priceAdvert <= priceHight && priceAdvert >= priceLow;
-    case 'any':
-      return true;
-  }
-};
-
-const checkPRoomsFilter = (offer) => offer.rooms === Number(roomsFilterElement.value) || roomsFilterElement.value === 'any';
-
-const checkGuestsFilter = (offer) => offer.guests === Number(guestsFilterElement.value) || guestsFilterElement.value === 'any';
-
-const checkFeaturesFilter = (offer) => {
-  if (featuresFilterArrays.length > 0 && offer.features) {
-    let i = 0;
-    featuresFilterArrays.forEach((el) => {
-      if (offer.features.includes(el)) {
-        i += 1;
-      }
-    });
-    return i === featuresFilterArrays.length;
-  }
-  if (featuresFilterArrays.length === 0) {
-    return true;
-  }
-};
-
-const getAdvertFilter = (advert) => (
-  checkTypeFilter(advert.offer) &&
-  checkPriceFilter(advert.offer) &&
-  checkPRoomsFilter(advert.offer) &&
-  checkGuestsFilter(advert.offer) &&
-  checkFeaturesFilter(advert.offer)
-);
-
 const markerGroup = L.layerGroup().addTo(map);
 
-const createMarker = (similarAdverts) => {
-  const filterAdverts = similarAdverts
-    .filter((advert) => getAdvertFilter(advert))
-    .slice(0, 10);
+const createMarker = () => {
+  const filterAdverts = [];
+  for (const advert of state.adverts) {
+    if (filterAdverts.length >= ADVERTS_QUANTITY) {
+      break;
+    }
+
+    if (getAdvertFilter(advert)) {
+      filterAdverts.push(advert);
+    }
+  }
 
   filterAdverts.forEach(({location, offer, author}) => {
     const marker = L.marker(
@@ -135,45 +104,40 @@ const createMarker = (similarAdverts) => {
   });
 };
 
-const clearMap = () => {
+const createMarkerWithDebounce = debounce(() => createMarker(state.adverts), RERENDER_DELAY);
+
+const onMapMarkerUpdate = () => {
   markerGroup.clearLayers();
+  createMarkerWithDebounce();
+};
+
+const updateMap = () => {
   mainPinMarker.setLatLng(TOKYO_COORDINATES);
   map.setView(TOKYO_COORDINATES, MAP_SCALE);
+  onMapMarkerUpdate();
 };
 
-const setMarkerFilter = (cb) => {
-  typeFilterElement.addEventListener('change', () => {
-    clearMap();
-    cb();
-  });
-  priceFilterElement.addEventListener('change', () => {
-    clearMap();
-    cb();
-  });
-  roomsFilterElement.addEventListener('change', () => {
-    clearMap();
-    cb();
-  });
-  guestsFilterElement.addEventListener('change', () => {
-    clearMap();
-    cb();
-  });
-  featuresCheckboxes.forEach((item) => {
-    item.addEventListener('change', () => {
-      if (item.checked) {
-        featuresFilterArrays.push(item.value);
-      } else {
-        featuresFilterArrays.splice(featuresFilterArrays.indexOf(item.value, 0), 1);
-      }
-      clearMap();
-      cb();
-    });
-  });
-};
+typeFilterElement.addEventListener('change', onMapMarkerUpdate);
+priceFilterElement.addEventListener('change', onMapMarkerUpdate);
+roomsFilterElement.addEventListener('change', onMapMarkerUpdate);
+guestsFilterElement.addEventListener('change', onMapMarkerUpdate);
+featuresCheckboxes.forEach((item) =>
+  item.addEventListener('change', () => {
+    if (item.checked) {
+      featuresFilterArrays.push(item.value);
+    } else {
+      featuresFilterArrays.splice(featuresFilterArrays.indexOf(item.value, 0), 1);
+    }
+    onMapMarkerUpdate();
+  }),
+);
 
 const restMarkers = () => {
-  clearMap();
-  addressElement.value = `${TOKYO_COORDINATES.lat}, ${TOKYO_COORDINATES.lng}`;
+  setAddressDefault();
+  updateMap();
 };
 
-export {createMarker, restMarkers, setMarkerFilter};
+export {
+  createMarker,
+  restMarkers
+};
