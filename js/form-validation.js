@@ -1,5 +1,5 @@
 import {formElement} from './form-status.js';
-import {ROOM_OPTION, MIN_PRICE} from './data.js';
+import {roomOption, minPrice} from './data.js';
 import {createErrMessage, createSuccessMessage} from './card.js';
 import {restMarkers} from './map.js';
 import {sendData} from './fetch-data.js';
@@ -39,11 +39,11 @@ noUiSlider.create(sliderPriceElement, {
     }
   }
 });
-const getValidRoom = () => ROOM_OPTION[validRoomsElement.value].includes(validCapacityElement.value);
-const getRoomOptionErrorMessage = () => `Выбрано: ${validRoomsElement.value} комнат. Выберите другое количество мест, например: ${ROOM_OPTION[validRoomsElement.value].join(' или ')}`;
+const getValidRoom = () => roomOption[validRoomsElement.value].includes(validCapacityElement.value);
+const getRoomOptionErrorMessage = () => `Выбрано: ${validRoomsElement.value} комнат. Выберите другое количество мест, например: ${roomOption[validRoomsElement.value].join(' или ')}`;
 
-const getValidPrice = () => validPriceElement.value >= MIN_PRICE[validTypeElement.value];
-const getMinPriceErrorMessage = () => `Цена не может быть меньше: ${MIN_PRICE[validTypeElement.value]}`;
+const getValidPrice = () => validPriceElement.value >= minPrice[validTypeElement.value];
+const getMinPriceErrorMessage = () => `Цена не может быть меньше: ${minPrice[validTypeElement.value]}`;
 
 validRoomsElement.addEventListener('change', () => {
   pristine.validate([validRoomsElement, validCapacityElement]);
@@ -53,8 +53,8 @@ validCapacityElement.addEventListener('change', () => {
 });
 
 validTypeElement.addEventListener('change', () => {
-  validPriceElement.placeholder = MIN_PRICE[validTypeElement.value];
-  validPriceElement.min = MIN_PRICE[validTypeElement.value];
+  validPriceElement.placeholder = minPrice[validTypeElement.value];
+  validPriceElement.min = minPrice[validTypeElement.value];
   pristine.validate([validTypeElement, validPriceElement]);
 });
 validPriceElement.addEventListener('change', () => {

@@ -1,4 +1,4 @@
-import {ADVERT_TYPE_VALUE} from './data.js';
+import {advertTypeValue} from './data.js';
 
 const createSimilarAdverts = ({offer, author}) => {
   const advertCardTemplate = document.querySelector('#card')
@@ -10,7 +10,7 @@ const createSimilarAdverts = ({offer, author}) => {
   advertElement.querySelector('.popup__title').textContent = offer.title;
   advertElement.querySelector('.popup__text--address').textContent = offer.address;
   advertElement.querySelector('.popup__text--price').textContent = offer.price ? `${offer.price} ₽/ночь` : '';
-  advertElement.querySelector('.popup__type').textContent = ADVERT_TYPE_VALUE[offer.type];
+  advertElement.querySelector('.popup__type').textContent = advertTypeValue[offer.type];
   advertElement.querySelector('.popup__text--capacity').textContent = offer.rooms && offer.guests ? `${offer.rooms} комнаты для ${offer.guests} гостей` : '';
   advertElement.querySelector('.popup__text--time').textContent = offer.checkin && offer.checkout ? `Заезд после ${offer.checkin}, выезд до ${offer.checkout}` : '';
   advertElement.querySelector('.popup__features').textContent = offer.features ? offer.features.join(', ') : '';

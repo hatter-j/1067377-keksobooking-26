@@ -6,7 +6,7 @@ const setAdverts = (adverts) => {
   state.adverts = adverts;
 };
 
-const ADVERT_TYPE_VALUE = {
+const advertTypeValue = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -14,14 +14,14 @@ const ADVERT_TYPE_VALUE = {
   hotel: 'Отель',
 };
 
-const ROOM_OPTION = {
+const roomOption = {
   '1' : ['1'],
   '2' : ['1', '2'],
   '3' : ['1', '2', '3'],
   '100' : ['0'],
 };
 
-const MIN_PRICE = {
+const minPrice = {
   'bungalow': 0,
   'flat': 1000,
   'hotel': 3000,
@@ -32,7 +32,7 @@ const MIN_PRICE = {
 export {
   state,
   setAdverts,
-  ADVERT_TYPE_VALUE,
-  ROOM_OPTION,
-  MIN_PRICE
+  advertTypeValue,
+  roomOption,
+  minPrice
 };

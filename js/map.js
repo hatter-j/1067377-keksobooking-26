@@ -25,7 +25,7 @@ import {state} from './data.js';
 
 const MAP_SCALE = 12;
 const RERENDER_DELAY = 500;
-const advertsQuantity = 10;
+const ADVERTS_QUANTITY = 10;
 
 const TOKYO_COORDINATES = {
   lat: 35.68951,
@@ -81,7 +81,7 @@ const markerGroup = L.layerGroup().addTo(map);
 const createMarker = () => {
   const filterAdverts = [];
   for (const advert of state.adverts) {
-    if (filterAdverts.length >= advertsQuantity) {
+    if (filterAdverts.length >= ADVERTS_QUANTITY) {
       break;
     }
 
@@ -106,7 +106,7 @@ const createMarker = () => {
 
 const createMarkerWithDebounce = debounce(() => createMarker(state.adverts), RERENDER_DELAY);
 
-const updateMapMarker = () => {
+const onUpdateMapMarker = () => {
   markerGroup.clearLayers();
   createMarkerWithDebounce();
 };
@@ -114,13 +114,13 @@ const updateMapMarker = () => {
 const updateMap = () => {
   mainPinMarker.setLatLng(TOKYO_COORDINATES);
   map.setView(TOKYO_COORDINATES, MAP_SCALE);
-  updateMapMarker();
+  onUpdateMapMarker();
 };
 
-typeFilterElement.addEventListener('change', updateMapMarker);
-priceFilterElement.addEventListener('change', updateMapMarker);
-roomsFilterElement.addEventListener('change', updateMapMarker);
-guestsFilterElement.addEventListener('change', updateMapMarker);
+typeFilterElement.addEventListener('change', onUpdateMapMarker);
+priceFilterElement.addEventListener('change', onUpdateMapMarker);
+roomsFilterElement.addEventListener('change', onUpdateMapMarker);
+guestsFilterElement.addEventListener('change', onUpdateMapMarker);
 featuresCheckboxes.forEach((item) =>
   item.addEventListener('change', () => {
     if (item.checked) {
@@ -128,7 +128,7 @@ featuresCheckboxes.forEach((item) =>
     } else {
       featuresFilterArrays.splice(featuresFilterArrays.indexOf(item.value, 0), 1);
     }
-    updateMapMarker();
+    onUpdateMapMarker();
   }),
 );
 
