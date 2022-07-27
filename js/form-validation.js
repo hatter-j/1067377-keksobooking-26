@@ -3,6 +3,8 @@ import {ROOM_OPTION, MIN_PRICE} from './data.js';
 import {createErrMessage, createSuccessMessage} from './card.js';
 import {restMarkers} from './map.js';
 import {sendData} from './fetch-data.js';
+import {restFormImg} from './photo-load.js';
+import {mapFiltersElement} from './map-filters.js';
 
 const pristine = new Pristine(formElement, {
   classTo: 'ad-form__element',
@@ -85,12 +87,19 @@ const setUnblockSubmitButton = () => {
   submitBtnElement.textContent = 'Опубликовать';
 };
 
+const setResetElements = () => {
+  formElement.reset();
+  restFormImg();
+  restMarkers();
+  mapFiltersElement.reset();
+  pristine.reset();
+  sliderPriceElement.noUiSlider.reset();
+};
+
 const onSuccessSendData = () => {
   createSuccessMessage();
   setUnblockSubmitButton();
-
-  formElement.reset();
-  restMarkers();
+  setResetElements();
 };
 
 const onErrorSendData = () => {
@@ -111,9 +120,9 @@ const setUserFormSubmit = () => {
 
 restBtnElement.addEventListener('click', (evt) => {
   evt.preventDefault();
-  formElement.reset();
-  restMarkers();
-  pristine.reset();
+  setResetElements();
 });
 
-export { setUserFormSubmit };
+export {
+  setUserFormSubmit
+};

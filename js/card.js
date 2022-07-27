@@ -33,11 +33,13 @@ const createSimilarAdverts = ({offer, author}) => {
   return advertElement;
 };
 
-const closeButtonElement = (formContainer) => {
-  const buttonError = formContainer.querySelector('.error__button');
-  buttonError.addEventListener('click', () => {
+const onErrorButtonClick = (formContainer) => {
+  const errorButton = formContainer.querySelector('.error__button');
+  errorButton.addEventListener('click',() => {
     formContainer.remove();
-  });
+  },
+  {once: true},
+  );
 };
 
 const onPopupEscKeydown = (formContainer) => {
@@ -46,13 +48,17 @@ const onPopupEscKeydown = (formContainer) => {
     if (key === 'Escape') {
       formContainer.remove();
     }
-  });
+  },
+  {once: true},
+  );
 };
 
 const onPopupMouseClick = (formContainer) => {
   document.addEventListener('click', () => {
     formContainer.remove();
-  });
+  },
+  {once: true},
+  );
 };
 
 const createErrMessage = () => {
@@ -60,7 +66,7 @@ const createErrMessage = () => {
   const errorElement = errorTemplateElement.cloneNode(true);
   document.body.append(errorElement);
 
-  closeButtonElement(errorElement);
+  onErrorButtonClick(errorElement);
   onPopupEscKeydown(errorElement);
   onPopupMouseClick(errorElement);
 };
@@ -76,4 +82,8 @@ const createSuccessMessage = () => {
   onPopupMouseClick(successElement);
 };
 
-export {createSimilarAdverts, createErrMessage, createSuccessMessage};
+export {
+  createSimilarAdverts,
+  createErrMessage,
+  createSuccessMessage
+};
