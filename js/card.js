@@ -17,14 +17,16 @@ const createSimilarAdverts = ({offer, author}) => {
   advertElement.querySelector('.popup__description').textContent = offer.description ? offer.description : '';
   const advertPhotosContainerElement = advertElement.querySelector('.popup__photos');
   const advertPhotoElement = advertPhotosContainerElement.querySelector('.popup__photo');
-  offer.photos.forEach((el) => {
-    const advertPhotoCloneElement = advertPhotoElement.cloneNode(true);
-    advertPhotoCloneElement.src = el;
-    advertPhotosContainerElement.append(advertPhotoCloneElement);
-    if (!el) {
-      advertPhotoCloneElement.style.display = 'none';
-    }
-  });
+  if (offer.photos) {
+    offer.photos.forEach((el) => {
+      const advertPhotoCloneElement = advertPhotoElement.cloneNode(true);
+      advertPhotoCloneElement.src = el;
+      advertPhotosContainerElement.append(advertPhotoCloneElement);
+      if (!el) {
+        advertPhotoCloneElement.style.display = 'none';
+      }
+    });
+  }
   advertPhotoElement.remove();
   advertElement.querySelector('.popup__avatar').src = author.avatar ? author.avatar : '';
 

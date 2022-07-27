@@ -8,10 +8,6 @@ import {
   CLASS_NAME_MAP_DISABLED,
   mapFiltersElement,
 } from './form-status.js';
-import {createAdverts} from './data.js';
-
-// eslint-disable-next-line no-console
-console.log(createAdverts());
 
 const advertsQuantity = 10;
 const RERENDER_DELAY = 500;
