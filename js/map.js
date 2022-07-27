@@ -106,7 +106,7 @@ const createMarker = () => {
 
 const createMarkerWithDebounce = debounce(() => createMarker(state.adverts), RERENDER_DELAY);
 
-const onUpdateMapMarker = () => {
+const onMapMarkerUpdate = () => {
   markerGroup.clearLayers();
   createMarkerWithDebounce();
 };
@@ -114,13 +114,13 @@ const onUpdateMapMarker = () => {
 const updateMap = () => {
   mainPinMarker.setLatLng(TOKYO_COORDINATES);
   map.setView(TOKYO_COORDINATES, MAP_SCALE);
-  onUpdateMapMarker();
+  onMapMarkerUpdate();
 };
 
-typeFilterElement.addEventListener('change', onUpdateMapMarker);
-priceFilterElement.addEventListener('change', onUpdateMapMarker);
-roomsFilterElement.addEventListener('change', onUpdateMapMarker);
-guestsFilterElement.addEventListener('change', onUpdateMapMarker);
+typeFilterElement.addEventListener('change', onMapMarkerUpdate);
+priceFilterElement.addEventListener('change', onMapMarkerUpdate);
+roomsFilterElement.addEventListener('change', onMapMarkerUpdate);
+guestsFilterElement.addEventListener('change', onMapMarkerUpdate);
 featuresCheckboxes.forEach((item) =>
   item.addEventListener('change', () => {
     if (item.checked) {
@@ -128,7 +128,7 @@ featuresCheckboxes.forEach((item) =>
     } else {
       featuresFilterArrays.splice(featuresFilterArrays.indexOf(item.value, 0), 1);
     }
-    onUpdateMapMarker();
+    onMapMarkerUpdate();
   }),
 );
 
