@@ -1,13 +1,31 @@
 import {setUserFormSubmit} from './form-validation.js';
-import {createMarker} from './map.js';
+import {createMarker, setMarkerFilter} from './map.js';
 import {getData} from './fetch-data.js';
-import {showErrorLoadData} from './util.js';
+import {showErrorLoadData, debounce} from './util.js';
+import {
+  setFormDisabled,
+  mapFormElement,
+  CLASS_NAME_MAP_DISABLED,
+  mapFiltersElement,
+} from './form-status.js';
+import {createAdverts} from './data.js';
+
+// eslint-disable-next-line no-console
+console.log(createAdverts());
 
 const advertsQuantity = 10;
+const RERENDER_DELAY = 500;
 
-getData(
-  (adverts) => createMarker(adverts.slice(0, advertsQuantity)),
-  () => showErrorLoadData('При загрузке данных с сервера произошла ошибка!')
-);
+const onSuccessLoadData = (adverts) => {
+  createMarker(adverts.slice(0, advertsQuantity));
+  setMarkerFilter(debounce(() => createMarker(adverts), RERENDER_DELAY));
+};
+
+const onErrorLoadData = () => {
+  showErrorLoadData('При загрузке данных с сервера произошла ошибка!');
+  setFormDisabled(mapFormElement, CLASS_NAME_MAP_DISABLED, mapFiltersElement);
+};
+
+getData(onSuccessLoadData, onErrorLoadData);
 
 setUserFormSubmit();

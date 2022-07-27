@@ -1,6 +1,6 @@
 import {ADVERT_TYPE_VALUE} from './data.js';
 
-const createSimularAdverts = ({offer, author}) => {
+const createSimilarAdverts = ({offer, author}) => {
   const advertCardTemplate = document.querySelector('#card')
     .content
     .querySelector('.popup');
@@ -74,4 +74,4 @@ const createSuccessMessage = () => {
   onPopupMouseClick(successElement);
 };
 
-export {createSimularAdverts, createErrMessage, createSuccessMessage};
+export {createSimilarAdverts, createErrMessage, createSuccessMessage};

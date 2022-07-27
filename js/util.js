@@ -38,4 +38,14 @@ const showErrorLoadData = (message) => {
   divContainer.after(alertContainer);
 };
 
-export {getRandomInteger, getRandomFractional, getRandomArrayElement, getRandomLengthArray, showErrorLoadData};
+function debounce(callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {getRandomInteger, getRandomFractional, getRandomArrayElement, getRandomLengthArray, showErrorLoadData, debounce};
