@@ -1,6 +1,6 @@
 import {ADVERT_TYPE_VALUE} from './data.js';
 
-const createSimularAdverts = ({offer, author}) => {
+const createSimilarAdverts = ({offer, author}) => {
   const advertCardTemplate = document.querySelector('#card')
     .content
     .querySelector('.popup');
@@ -17,14 +17,16 @@ const createSimularAdverts = ({offer, author}) => {
   advertElement.querySelector('.popup__description').textContent = offer.description ? offer.description : '';
   const advertPhotosContainerElement = advertElement.querySelector('.popup__photos');
   const advertPhotoElement = advertPhotosContainerElement.querySelector('.popup__photo');
-  offer.photos.forEach((el) => {
-    const advertPhotoCloneElement = advertPhotoElement.cloneNode(true);
-    advertPhotoCloneElement.src = el;
-    advertPhotosContainerElement.append(advertPhotoCloneElement);
-    if (!el) {
-      advertPhotoCloneElement.style.display = 'none';
-    }
-  });
+  if (offer.photos) {
+    offer.photos.forEach((el) => {
+      const advertPhotoCloneElement = advertPhotoElement.cloneNode(true);
+      advertPhotoCloneElement.src = el;
+      advertPhotosContainerElement.append(advertPhotoCloneElement);
+      if (!el) {
+        advertPhotoCloneElement.style.display = 'none';
+      }
+    });
+  }
   advertPhotoElement.remove();
   advertElement.querySelector('.popup__avatar').src = author.avatar ? author.avatar : '';
 
@@ -74,4 +76,4 @@ const createSuccessMessage = () => {
   onPopupMouseClick(successElement);
 };
 
-export {createSimularAdverts, createErrMessage, createSuccessMessage};
+export {createSimilarAdverts, createErrMessage, createSuccessMessage};
